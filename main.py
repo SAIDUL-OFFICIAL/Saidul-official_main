@@ -269,7 +269,7 @@ def save_usage_to_db(user_id, usage):
         logger.error(f"Failed to save usage to DB: {e}")
 
 
-# === UTILS (unchanged logic) ===
+# === UTILS (fixed version) ===
 
 def is_user_in_channel(user_id):
     try:
@@ -287,20 +287,37 @@ def call_api(region, uid):
     url = f"https://like-premium-plus.vercel.app/like?uid={uid}&server_name={region}"
     try:
         response = requests.get(url, timeout=20)
+
+        # DEBUG (problem detect করার জন্য)
+        print("STATUS:", response.status_code)
+        print("TEXT:", response.text)
+
         if response.status_code != 200:
-            return {"⚠️Invalid": " Maximum likes reached for today. Please try again tomorrow."}
-        return response.json()
+            return {"error": "⚠️ Maximum likes reached or server problem. Try again later."}
+
+        try:
+            data = response.json()
+        except ValueError:
+            return {"error": "❌ Invalid JSON response from API."}
+
+        # API ভিতরের error handle
+        if isinstance(data, dict):
+            if data.get("status") == "error":
+                return {"error": data.get("message", "❌ API returned error")}
+            if "error" in data:
+                return {"error": data["error"]}
+
+        return data
+
     except requests.exceptions.RequestException:
-        return {"error": "API Failed. Please try again later."}
-    except ValueError:
-        return {"error": "Invalid JSON response."}
+        return {"error": "❌ API Failed. Please try again later."}
 
 
 def get_user_limit(user_id):
     now = datetime.now()
     vip = vip_users.get(user_id)
     if vip and vip['expires'] > now:
-        return vip['limit']
+        return vip.get('limit', 0)
     return 0
 
 
