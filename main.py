@@ -35,7 +35,7 @@ if not BOT_TOKEN:
 # Persistence flag: if DATABASE_URL provided, we'll persist data to Postgres
 PERSISTENCE = bool(DATABASE_URL)
 
-REQUIRED_CHANNELS = ["@Saidul_Official","@premium_like_bot_34","@saidul_34_bot"]
+REQUIRED_CHANNELS = ["@Saidul_Official","@premium_like_bot_34","@saidul_bot_34"]
 GROUP_JOIN_LINK = "https://t.me/premium_like_bot_34"
 OWNER_ID = 8408849795
 DEFAULT_AUTO_LIKE_CHAT_ID = -1003988111389
@@ -357,7 +357,7 @@ def is_user_in_channel(user_id):
 
 
 def call_api(region, uid):
-    url = f"https://saidul-official-34.vercel.app/like?uid={uid}&server_name={region}"
+    url = f"https://like-premium-two.vercel.app/like?uid={uid}&server_name={region}"
     try:
         response = requests.get(url, timeout=20)
         if response.status_code != 200:
@@ -933,7 +933,7 @@ def auto_like_scheduler():
                 f"Auto like scheduler error: {e}"
             )
 
-        time.sleep(60)
+        time.sleep(30)
 
 # Initialize DB and load persisted data (if enabled)
 try:
@@ -1172,7 +1172,7 @@ def process_like(message, region, uid):
             message,
             f"⚠️ You have exceeded your daily request limit!\n"
             f"Or You Do Not Have permission To Send Like Request\n\n"
-            f"⏳ Next request available at: 00:00 UTC\n"
+            f"⏳ Next request available at: 22:00 UTC\n"
             f"(in {int(hours)}h {int(minutes)}m)\n\n"
             f"🔐 Buy More VIP or wait for the cooldown.",
             reply_markup=markup
@@ -1432,7 +1432,7 @@ def process_like(message, region, uid):
             f"━━━━━━━━━━━━━━━━━━\n"
             f"{vip_info}\n"
             f"━━━━━━━━━━━━━━━━━━\n"
-            f"📝 *Note:* Thanks For Purchase Premium Likes Subscription\n"
+            f"📝 *Note:* Thanks For Purchase Premium Likes 220 like Subscription\n"
             f"👑 *Owner:* {owner_mention}"
         )
 
